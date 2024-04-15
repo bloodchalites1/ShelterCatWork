@@ -1,8 +1,10 @@
 #ifndef SHELTER_H
 #define SHELTER_H
 
-//КОММИТ 1 Созданы Классы и Перечисления\\
-//
+//КОММИТ 2 АТРИБУТЫ обьектов класса\\
+//создан оператор switch с вытекющим case
+// они будут необходимы для общих действий над обьектами
+
 
 enum class CatBreed //перечисление пород кошки
 {
@@ -37,61 +39,66 @@ enum class CatMood //перечисление настроения кошки
     Play, //игривая
     Painful //болезненное
 };
-enum class ParadiseObject //ангельские перечисления частей тел для кошки
+enum class ParadiseObject
 {
     ParadiseWings,
     Halo,
     Bible
 };
-enum class HellObject //адские перечисления частей тел для кошки
+enum class HellObject
 {
     HellWings,
     Hooves,
     Horns
 };
+//печатающая функция
+string PrintDemonCat( HellObject demon );
+string PrintAngelCat( ParadiseObject angel );
+string PrintNormalCat( CatBreed breed );
+
+string PrintCatType( CatType type );
 
 class Cat
 {
 protected:
     CatColorEnum Color;
     CatMood Mood;
+    CatType type;
     bool Hungry;
     Cat();
 public:
     virtual ~Cat() {}
     CatColorEnum GetColor() const {return Color; }; //узнать цвет
-    CatMood GetMood() const { return Mood; }
+    CatMood GetMood() const { return Mood; } //узнать настроение кошки
     bool GetHungry() const;
-    //другие методы будут во 2-м коммите
-
 };
 
-class NormalCats : public Cat //нормальные кошки
+class NormalCats : public Cat
 {
 private:
     CatBreed Breed;
 public:
     CatBreed GetBreed() const {return Breed; }
-    NormalCats() : Cat() { Breed = CatBreed(rand() % 7 - 1);
-                           Color = CatColorEnum(rand() % 7 - 1);
+    NormalCats() : Cat() { Color = CatColorEnum(rand() % 7 - 1);
                            Mood = CatMood(rand() % 4);}
     //CatMood GetMood() const { return Mood; }
 
 };
 
-class HellsCats : public Cat //демонические кошки
+class HellsCats : public Cat
 {
 private:
-
+    HellObject demon;
 public:
     HellsCats() : Cat() { Color = CatColorEnum::Red;
                           Mood = CatMood::Bad;}
+
 };
 
-class ParadiseCats : public Cat //райские кошки
+class ParadiseCats : public Cat
 {
 private:
-
+    ParadiseObject angel;
 public:
     ParadiseCats() : Cat() { Color = CatColorEnum::White;
                              Mood = CatMood(rand() % 4);}
