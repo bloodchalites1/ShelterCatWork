@@ -1,10 +1,9 @@
 #ifndef SHELTER_H
 #define SHELTER_H
 
-//КОММИТ 2 АТРИБУТЫ обьектов класса\\
-//создан оператор switch с вытекющим case
-// они будут необходимы для общих действий над обьектами
-
+//КОММИТ 3 Общие действия\\
+// с помощью команды view выводиться сразу 3 атрибута
+//потом еще добавлю GetColorEnum()
 
 enum class CatBreed //перечисление пород кошки
 {
@@ -51,25 +50,26 @@ enum class HellObject
     Hooves,
     Horns
 };
-//печатающая функция
 string PrintDemonCat( HellObject demon );
 string PrintAngelCat( ParadiseObject angel );
 string PrintNormalCat( CatBreed breed );
-
 string PrintCatType( CatType type );
+string PrintCatMood(CatMood mood );
 
 class Cat
 {
 protected:
     CatColorEnum Color;
-    CatMood Mood;
+    CatMood mood;
     CatType type;
     bool Hungry;
     Cat();
 public:
     virtual ~Cat() {}
     CatColorEnum GetColor() const {return Color; }; //узнать цвет
-    CatMood GetMood() const { return Mood; } //узнать настроение кошки
+
+    //CatMood GetMood() const { return Mood; }
+    virtual void View() const = 0;
     bool GetHungry() const;
 };
 
@@ -78,10 +78,15 @@ class NormalCats : public Cat
 private:
     CatBreed Breed;
 public:
-    CatBreed GetBreed() const {return Breed; }
-    NormalCats() : Cat() { Color = CatColorEnum(rand() % 7 - 1);
-                           Mood = CatMood(rand() % 4);}
-    //CatMood GetMood() const { return Mood; }
+    //CatBreed GetBreed() const {return Breed; }
+    NormalCats() : Cat() { type = CatType(rand() % 4);
+                           Breed = CatBreed(rand() % 7 - 1);
+                           Color = CatColorEnum(rand() % 7 - 1);
+                           mood = CatMood(rand() % 4);}
+    void View() const { cout << "Вы заметили что эта обычная кошка и ее порода: " //изучение кошки
+                        << PrintNormalCat(Breed) << "\nА также, вы замечаете что это "
+                        << PrintCatType(type) <<  " и это кошка выглядит " << PrintCatMood(mood) << endl; }
+
 
 };
 
@@ -90,9 +95,13 @@ class HellsCats : public Cat
 private:
     HellObject demon;
 public:
-    HellsCats() : Cat() { Color = CatColorEnum::Red;
-                          Mood = CatMood::Bad;}
-
+    HellsCats() : Cat() { type = CatType(rand() % 4);
+                          demon = HellObject(rand() % 3);
+                          Color = CatColorEnum::Red;
+                          mood = CatMood::Bad;}
+    void View() const { cout << "Вы заметили что эта кошка демоническая и у нее есть странные конечности: " //изучение кошки
+                        << PrintDemonCat(demon) << "\nА также, вы замечаете что это "
+                        << PrintCatType(type) << " и это кошка выглядит " << PrintCatMood(mood) << endl;}
 };
 
 class ParadiseCats : public Cat
@@ -100,8 +109,13 @@ class ParadiseCats : public Cat
 private:
     ParadiseObject angel;
 public:
-    ParadiseCats() : Cat() { Color = CatColorEnum::White;
-                             Mood = CatMood(rand() % 4);}
+    ParadiseCats() : Cat() { type = CatType(rand() % 4);
+                             angel = ParadiseObject(rand() % 3);
+                             Color = CatColorEnum::White;
+                             mood = CatMood(rand() % 4);}
+    void View() const { cout << "Вы заметили что эта кошка райская и у нее есть странные конечности: " //изучение кошки
+                        << PrintAngelCat(angel) << "\nА также, вы замечаете что это "
+                        << PrintCatType(type) << " и это кошка выглядит " << PrintCatMood(mood) << endl; }
 };
 
 #endif // SHELTER_H

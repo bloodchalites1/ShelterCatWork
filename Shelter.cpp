@@ -1,10 +1,11 @@
 #include <iostream>
 
-
 using namespace std;
 
 #include "Shelter.h"
+
 //РАНДОМ ГОЛОДА КОШЕК
+
 Cat::Cat()
 {
     Hungry = bool(rand() % 2);
@@ -14,7 +15,7 @@ bool Cat::GetHungry() const
 {
     if(Hungry == 0)
     {
-        wcout << "Кажется кошка голодна! \n";
+        wcout << "Кажеться кошка голодна! \n";
     }
     else
     {
@@ -25,7 +26,6 @@ string PrintDemonCat( HellObject demon )
 {
     switch(demon)
     {
-        //инициализирование обьектов перечисления класса
         case HellObject::HellWings : return "демонические крылья";
         case HellObject::Hooves : return "копыта";
         case HellObject::Horns : return "рога";
@@ -38,7 +38,7 @@ string PrintAngelCat( ParadiseObject angel )
     switch(angel)
     {
         case ParadiseObject::ParadiseWings : return "ангельские крылья";
-        case ParadiseObject::Halo : return "Нимб";
+        case ParadiseObject::Halo : return "нимб";
         case ParadiseObject::Bible : return "Библия";
     }
 }
@@ -60,9 +60,19 @@ string PrintCatType( CatType type )
 {
     switch(type)
     {
-        case CatType::Kitty : return "Котёнок";
-        case CatType::Little : return "Миниатюрная кошка";
-        case CatType::Average : return "Средняя кошка";
-        case CatType::Big : return "Большая кошка";
+        case CatType::Kitty : return "котёнок";
+        case CatType::Little : return "миниатюрная кошка";
+        case CatType::Average : return "средняя кошка";
+        case CatType::Big : return "большая кошка";
+    }
+}
+string PrintCatMood(CatMood mood )
+{
+    switch(mood)
+    {
+    case CatMood::Bad : return "плохо...";
+    case CatMood::Nice : return "отлично!";
+    case CatMood::Play : return "игривой!";
+    case CatMood::Painful : return "довольно болезненно...";
     }
 }
