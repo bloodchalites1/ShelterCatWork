@@ -22,6 +22,17 @@ bool Cat::GetHungry() const
         wcout << "Кажется кошка сыта! \n";
     }
 }
+
+void Cat::Feed()
+{
+    if(Hungry == 0)
+    {
+        wcout << "Вы покормили кошку мяском" << endl;
+        Hungry = 1;
+        GetHungry();
+    }
+}
+
 string PrintDemonCat( HellObject demon )
 {
     switch(demon)
@@ -74,5 +85,17 @@ string PrintCatMood(CatMood mood )
     case CatMood::Nice : return "отлично!";
     case CatMood::Play : return "игривой!";
     case CatMood::Painful : return "довольно болезненно...";
+    }
+}
+string PrintCatColor(CatColorEnum color )
+{
+    switch(color)
+    {
+        case CatColorEnum::Red : return "рыжей";
+        case CatColorEnum::Black : return "черной";
+        case CatColorEnum::White : return "белой";
+        case CatColorEnum::Blue : return "голубоватой";
+        case CatColorEnum::Chocolate : return "шоколадной";
+        case CatColorEnum::Another : return "разноцветной";
     }
 }
