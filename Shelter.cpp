@@ -2,27 +2,24 @@
 
 using namespace std;
 
+
 #include "Shelter.h"
 
-//РАНДОМ ГОЛОДА КОШЕК
 
+//РАНДОМ ГОЛОДА КОШЕК
 Cat::Cat()
 {
     Hungry = bool(rand() % 2);
 }
 
+//голод кошек
 bool Cat::GetHungry() const
 {
-    if(Hungry == 0)
-    {
-        wcout << "Кажеться кошка голодна! \n";
-    }
-    else
-    {
-        wcout << "Кажется кошка сыта! \n";
-    }
+    if(Hungry == 0){ wcout << "Кажеться кошка голодна! \n"; }
+    else { wcout << "Кажется кошка сыта! \n"; }
 }
 
+//покормить кошку
 void Cat::Feed()
 {
     if(Hungry == 0)
@@ -32,6 +29,62 @@ void Cat::Feed()
         GetHungry();
     }
 }
+
+//конструктор класса CatContainer и спользует максимальный размер контейнера
+CatContainer::CatContainer(int maxSize)
+{
+    CatBox = new CatPtr[maxSize]; //дин. массив размера максайз
+
+    for(int i=0; i<maxSize; i++)
+    {
+        CatBox[i] = NULL; //изначально в контейнере нет никого
+    }
+
+    CatCount = 0; //кол-во кошек в коштейнере
+    MaxSize = maxSize; //макс размер равен максимальному размеру контейнера
+}
+
+//Уничтожение кошек, назовем освобождение из коробки((
+CatContainer::~CatContainer()
+{
+    for(int i=0; i< MaxSize; i++)
+    {
+        if(CatBox[i] != NULL) //если в контейнере не нуль кошек
+        {
+            delete CatBox[i]; //то удаляется контейнер
+            CatBox[i] = NULL; // и контейнер снова пуст
+        }
+    }
+
+    delete [] CatBox;
+}
+
+//Добавление кошки в коробку
+void CatContainer::AddCat(CatPtr newCat)
+{
+    if(CatCount != MaxSize)
+    {
+        CatBox[CatCount++] = newCat;
+        static int n = 1;
+        wcout << "Посадили в коробку " << n++ << " кошек"<< endl;
+    }
+    else
+    {
+        wcout << "Коробка переполнена кошками" << endl;
+    }
+}
+
+CatBreed RandomCatBreed()
+{
+    return CatBreed(rand() % 4);
+}
+
+
+Cat *Cat::Find(CatBreed breed)
+{
+    return Find(breed);
+}
+
 
 string PrintDemonCat( HellObject demon )
 {
@@ -67,6 +120,7 @@ string PrintNormalCat( CatBreed breed )
         case CatBreed::Another : return "Другая порода кошки";
     }
 }
+
 string PrintCatType( CatType type )
 {
     switch(type)
@@ -77,6 +131,7 @@ string PrintCatType( CatType type )
         case CatType::Big : return "большая кошка";
     }
 }
+
 string PrintCatMood(CatMood mood )
 {
     switch(mood)
@@ -87,6 +142,7 @@ string PrintCatMood(CatMood mood )
     case CatMood::Painful : return "довольно болезненно...";
     }
 }
+
 string PrintCatColor(CatColorEnum color )
 {
     switch(color)
@@ -99,3 +155,5 @@ string PrintCatColor(CatColorEnum color )
         case CatColorEnum::Another : return "разноцветной";
     }
 }
+
+

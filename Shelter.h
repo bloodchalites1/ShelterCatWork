@@ -1,9 +1,8 @@
 #ifndef SHELTER_H
 #define SHELTER_H
-
-//КОММИТ 4 Общие действия\\
-// с помощью команды view выводиться сразу 3 атрибута
-//было добавлено действие погладить Pat() а также метод погормить кошку Feed()
+#include <vector>
+//КОММИТ 5 КОНТЕЙНЕРЫ\\
+// Созданы 1 базовый класс-контейнер и 2 наследуемых контейнера
 
 enum class CatBreed //перечисление пород кошки
 {
@@ -74,7 +73,8 @@ public:
     virtual void View() const = 0;
     virtual void Pat() const = 0; //погладить кошку
     bool GetHungry() const;
-    void Feed();
+    void Feed(); // покормить кошку
+    static Cat *Find(CatBreed breed); //найти(создать) кошку определенной породы
 };
 
 class NormalCats : public Cat
@@ -82,7 +82,6 @@ class NormalCats : public Cat
 private:
     CatBreed Breed;
 public:
-    //CatBreed GetBreed() const {return Breed; }
     NormalCats() : Cat() { type = CatType(rand() % 4);
                            Breed = CatBreed(rand() % 7 - 1);
                            color = CatColorEnum(rand() % 5 - 1);
@@ -98,6 +97,7 @@ public:
 
 class HellsCats : public Cat
 {
+
 private:
     HellObject demon;
 public:
@@ -126,5 +126,51 @@ public:
     void Pat() const { cout << "Вы гладите кошку по ее " << PrintCatColor(color) << " шерстке, ее шерстка идеальна..." << endl; }
 
 };
+
+
+
+
+//КОНТЕЙНЕРЫ
+typedef Cat * CatPtr;
+
+
+//Основной класс контейнер
+class BaseContainer // Базовый класс для контейнера
+{
+protected:
+    BaseContainer() {};
+public:
+    virtual void AddCat(CatPtr newCat) = 0; // Абстрактный метод для добавления кошки в контейнер
+    virtual int GetCount() const = 0; // Абстрактный метод для получения количества кошек в контейнере
+    virtual CatPtr GetByIndex(int index) const = 0; // Абстрактный метод для получения кошки по индексу
+};
+
+//класс-контейнер для нормальных кошек
+class CatContainer :  BaseContainer //контейнер с кошками
+{
+private:
+    CatPtr *CatBox; //указатель на указатель на кошку (дин.массив указателей на кошек)
+    int CatCount; //количество кошек
+    int MaxSize; //макс размер контейнера
+public:
+    virtual ~CatContainer();
+    CatContainer(int maxSize);
+    void AddCat(CatPtr newCat);//добавить кошку в приют
+    int GetCount() const {cout << "В коробке " << CatCount << " хвостатых\n"; return CatCount; } //получить число кошек
+    CatPtr GetByIndex(int i) const { return CatBox[i]; } //пронумеровать кошек их можно ;)
+
+};
+
+class MegaCatContainer : public BaseContainer
+{
+private:
+    std::vector<CatPtr> CatBox;
+public:
+    void AddCat(CatPtr newCat) {CatBox.push_back(newCat); } //добавить фрукт
+    int GetCount() const { return CatBox.size(); };
+    CatPtr GetByIndex(int index) const { return CatBox[index]; }
+
+};
+
 
 #endif // SHELTER_H
