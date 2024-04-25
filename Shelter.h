@@ -4,8 +4,10 @@
 #include "Iterator.h"
 
 
-//КОММИТ 8 Готовые декораторы итератора\\
-// Созданы 3 декоратора для отбора различных видов кошек
+//КОММИТ 10 Вроде законченная работа без SQLite!\\
+            // Созданы 3 декоратора для отбора различных видов кошек
+                            //и создана "двойная сортировка" по двум параметрам
+
 enum class CatBreed                 //перечисление пород кошки
 {
     MainCoon,
@@ -91,6 +93,7 @@ public:
     static Cat *Find(OriginCats origin);       //найти(создать) кошку определенной породы
 };
 
+    //НАСЛЕДУЕМЫЙ КЛАСС ОБЫЧНЫХ КОШЕК
 class NormalCats : public Cat
 {
 private:
@@ -111,6 +114,7 @@ public:
 
 };
 
+    // НАСЛЕДУЕМЫЙ КЛАСС АДСКИХ КОШЕК
 class HellsCats : public Cat
 {
 
@@ -128,6 +132,7 @@ public:
     void Pat() const { cout << "Вы гладите адскую кошку по ее " << PrintCatColor(color) << " шерстке, она вас обжигает!" << endl; }
 };
 
+    // НАСЛЕДУЕМЫЙ КЛАСС РАЙСКИХ КОШЕК
 class ParadiseCats : public Cat
 {
 private:
@@ -145,12 +150,9 @@ public:
 
 };
 
-
-
-
-    //КОНТЕЙНЕР №1
 typedef Cat * CatPtr;
-//Основной класс контейнер
+
+    //ОСНОВНОЙ КЛАСС-КОНТЕЙНЕР
 class BaseContainer                 // Базовый класс для контейнера
 {
 protected:
@@ -161,7 +163,7 @@ public:
     virtual CatPtr GetByIndex(int index) const = 0;     // Абстрактный метод для получения кошки по индексу
 };
 
-            //ИТЕРАТОР №1
+    //ИТЕРАТОР №1
 class CatContainerIterator : public Iterator<CatPtr>
 {
 private:
@@ -187,7 +189,7 @@ public:
     CatPtr GetCurrent() const { return CatBox[Pos]; }
 };
 
-            //№1 класс-контейнер для нормальных кошек
+    //№1 КЛАСС-КОНТЕЙНЕР
 class CatContainer :  BaseContainer             //контейнер с кошками
 {
 private:
@@ -198,7 +200,7 @@ public:
     virtual ~CatContainer();
     CatContainer(int maxSize);
     void AddCat(CatPtr newCat);                 //добавить кошку в приют
-    int GetCount() const {cout << "В коробке " << CatCount << " хвостатых\n"; return CatCount; }    //получить число кошек
+    int GetCount() const { return CatCount; }    //получить число кошек
     CatPtr GetByIndex(int i) const { return CatBox[i]; }           //пронумеровать кошек
     Iterator<CatPtr> *GetIterator()
     {
@@ -206,7 +208,7 @@ public:
     }
 };
 
-    //ИТЕРАТОР ДЛЯ 2-го КОНТЕЙНЕРА (ВЕКТОР)
+    //ИТЕРАТОР ДЛЯ 2-ГО КОНТЕЙНЕРА (ВЕКТОР)
 class CatContainerIterator2 : public Iterator<CatPtr>
 {
 protected:
@@ -249,9 +251,9 @@ public:
 };
 
 
-//ДЕКОРАТОРЫ
+    //ДЕКОРАТОРЫ
 
-//Декоратор для отбора кошек по их настроению
+    //Декоратор №1 для отбора кошек по их настроению
 class CatMoodDecorator : public IteratorDecorator<CatPtr>
 {
 protected:
@@ -280,7 +282,7 @@ public:
     }
 };
 
-//Декоратор для отбора кошек по типу
+//Декоратор №2 для отбора кошек по типу
 class CatTypeDecorator : public IteratorDecorator<CatPtr>
 {
 protected:
@@ -307,7 +309,7 @@ public:
     }
 };
 
-//Декоратор для отбора кошек по их цвету
+//Декоратор №3 для отбора кошек по их цвету
 class CatColorDecorator : public IteratorDecorator<CatPtr>
 {
 protected:
@@ -334,7 +336,6 @@ public:
         } while (!It->IsDone() && It->GetCurrent()->GetColor() != Color);
     }
 };
-
 
 
 #endif // SHELTER_H

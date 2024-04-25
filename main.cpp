@@ -40,9 +40,9 @@ int main()
 
     cout << "\n";
     cout << "Коробка для кошек №1\n\n";
-        //вызов функции Iterator1
         //кол-во кошек в коробке
-    container1.GetCount();
+    cout << "В коробке " << container1.GetCount() << " кошек всего\n" << endl;
+        //вызов функции Iterator1
     Iterator1(container1.GetIterator());
 
     cout << "\n";
@@ -53,10 +53,10 @@ int main()
     {
         container2.AddCat(Cat::Find(RandomCatOrigin()));
     }
-    wcout << "В мега-коробке " << container2.GetCount() << " кошек" << endl;
+    wcout << "В мега-коробке " << container2.GetCount() << " кошек всего " << endl;
 
         //выводит всех кошек их мега-коробки
-    Iterator1(container2.GetIterator());
+    //Iterator1(container2.GetIterator());
 
         // декоратор №1 выводит только кошек с отличны настроением
     //Iterator<CatPtr> *it = new CatMoodDecorator(container2.GetIterator(), CatMood::Nice);
@@ -64,6 +64,8 @@ int main()
     //Iterator<CatPtr> *it = new CatTypeDecorator(container2.GetIterator(), CatType::Big);
         // декоратор №3 выводит только рыжих кошек
     //Iterator<CatPtr> *it = new CatColorDecorator(container2.GetIterator(), CatColorEnum::Red);
-    //Iterator1(it);
+        //Два декоратора №1 и №2 выводит большую кошку с отличным настроением
+    Iterator<CatPtr> *it = new CatMoodDecorator(new CatTypeDecorator(container2.GetIterator(), CatType::Big ), CatMood::Nice);
+    Iterator1(it);
     return 0;
 }
