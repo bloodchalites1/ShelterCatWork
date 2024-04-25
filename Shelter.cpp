@@ -6,71 +6,77 @@ using namespace std;
 #include "Shelter.h"
 
 
-//РАНДОМ ГОЛОДА КОШЕК
+    //РАНДОМ ГОЛОДА КОШЕК
+
 Cat::Cat()
 {
     Hungry = bool(rand() % 2);
 }
 
-//голод кошек
+    //голод кошек
+
 bool Cat::GetHungry() const
 {
-    if(Hungry == 0){ wcout << "Кажеться кошка голодна! \n"; }
-    else { wcout << "Кажется кошка сыта! \n"; }
+    if(Hungry == 0){ cout << "Кажется кошка голодна! \n"; }
+    else { cout << "Кажется кошка сыта! \n"; }
 }
 
-//покормить кошку
+    //покормить кошку
+
 void Cat::Feed()
 {
     if(Hungry == 0)
     {
-        wcout << "Вы покормили кошку мяском" << endl;
+        cout << "Вы покормили кошку мяском" << endl;
         Hungry = 1;
         GetHungry();
     }
 }
 
-//конструктор класса CatContainer и спользует максимальный размер контейнера
+    //конструктор класса CatContainer и спользует максимальный размер контейнера
+
 CatContainer::CatContainer(int maxSize)
 {
-    CatBox = new CatPtr[maxSize]; //дин. массив размера максайз
+    CatBox = new CatPtr[maxSize];   //дин. массив размера максайз
 
     for(int i=0; i<maxSize; i++)
     {
-        CatBox[i] = NULL; //изначально в контейнере нет никого
+        CatBox[i] = NULL;           //изначально в контейнере нет никого
     }
 
-    CatCount = 0; //кол-во кошек в коштейнере
-    MaxSize = maxSize; //макс размер равен максимальному размеру контейнера
+    CatCount = 0;                   //кол-во кошек в коштейнере
+    MaxSize = maxSize;              //макс размер равен максимальному размеру контейнера
 }
 
-//Уничтожение кошек, назовем освобождение из коробки((
+    //Уничтожение кошек, назовем освобождение из коробки((
+
 CatContainer::~CatContainer()
 {
     for(int i=0; i< MaxSize; i++)
     {
-        if(CatBox[i] != NULL) //если в контейнере не нуль кошек
+        if(CatBox[i] != NULL)       //если в контейнере не нуль кошек
         {
-            delete CatBox[i]; //то удаляется контейнер
-            CatBox[i] = NULL; // и контейнер снова пуст
+            delete CatBox[i];       //то удаляется контейнер
+            CatBox[i] = NULL;       // и контейнер снова пуст
         }
     }
 
     delete [] CatBox;
 }
 
-//Добавление кошки в коробку
+    //Добавление кошки в коробку
+
 void CatContainer::AddCat(CatPtr newCat)
 {
     if(CatCount != MaxSize)
     {
         CatBox[CatCount++] = newCat;
         static int n = 1;
-        wcout << "Посадили в коробку " << n++ << " кошек"<< endl;
+        cout << "Посадили в коробку " << n++ << " кошек"<< endl;
     }
     else
     {
-        wcout << "Коробка переполнена кошками" << endl;
+        cout << "Коробка переполнена кошками" << endl;
     }
 }
 
@@ -129,6 +135,7 @@ string PrintCatType( CatType type )
         case CatType::Little : return "миниатюрная кошка";
         case CatType::Average : return "средняя кошка";
         case CatType::Big : return "большая кошка";
+        //default: return nullptr;
     }
 }
 
@@ -136,10 +143,10 @@ string PrintCatMood(CatMood mood )
 {
     switch(mood)
     {
-    case CatMood::Bad : return "плохо...";
-    case CatMood::Nice : return "отлично!";
-    case CatMood::Play : return "игривой!";
-    case CatMood::Painful : return "довольно болезненно...";
+    case CatMood::Bad : return "плохое";
+    case CatMood::Nice : return "отличное";
+    case CatMood::Play : return "игривое";
+    case CatMood::Painful : return "довольно болезненное";
     }
 }
 
@@ -147,12 +154,12 @@ string PrintCatColor(CatColorEnum color )
 {
     switch(color)
     {
-        case CatColorEnum::Red : return "рыжей";
-        case CatColorEnum::Black : return "черной";
-        case CatColorEnum::White : return "белой";
-        case CatColorEnum::Blue : return "голубоватой";
-        case CatColorEnum::Chocolate : return "шоколадной";
-        case CatColorEnum::Another : return "разноцветной";
+        case CatColorEnum::Red : return "рыжый";
+        case CatColorEnum::Black : return "черный";
+        case CatColorEnum::White : return "белый";
+        case CatColorEnum::Blue : return "голубоватый";
+        case CatColorEnum::Chocolate : return "шоколадный";
+        case CatColorEnum::Another : return "разноцветный";
     }
 }
 

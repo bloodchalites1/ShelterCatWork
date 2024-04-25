@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Iterator.h" />
 		<Unit filename="Shelter.cpp" />
 		<Unit filename="Shelter.h" />
 		<Unit filename="main.cpp" />
