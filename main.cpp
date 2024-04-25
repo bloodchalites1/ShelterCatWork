@@ -18,7 +18,6 @@ void Iterator1(Iterator<CatPtr> *it)
         cout << "Цвет кошки: " << PrintCatColor(cat->GetColor()) << "."
              << " Настроение кошки: " << PrintCatMood(cat->GetMood())
              << ". Телосложение: " << PrintCatType( cat->GetType()) << endl;
-        cout << endl;
     }
 }
 
@@ -55,30 +54,35 @@ int main()
     cat3.Feed();
     cout << "\n";
     */
-    cout << "Коробка для кошек\n";
-    CatContainer container(5);
-    container.AddCat(&cat1);
-    container.AddCat(&cat2);
-    container.AddCat(&cat3);
-    container.AddCat(new NormalCats);
-    container.GetCount();
+    CatContainer container1(5);
+    container1.AddCat(&cat1);
+    container1.AddCat(&cat2);
+    container1.AddCat(&cat3);
+    container1.AddCat(new NormalCats);
+    container1.GetCount();
     cout << "\n";
-    /*
-    MegaCatContainer catBox;
+    cout << "Коробка для кошек №1\n";
+    cout << "\n";
+    Iterator1(container1.GetIterator());
+    cout << "\n";
+    cout << "Мега-Коробка для кошек №2\n\n";
+    MegaCatContainer container2;
+        //Добавление кошек в коробку №2
+    MegaCatContainer ccontainer2;
 
-    for(int i=0; i<10; i++)
+    for(int i=0; i<3; i++)
     {
-        catBox.AddCat(new NormalCats);
+        container2.AddCat(new NormalCats);
     }
-    for(int i=0; i<20; i++)
+    for(int i=0; i<5; i++)
     {
-        catBox.AddCat(new ParadiseCats);
+        container2.AddCat(new ParadiseCats);
     }
-    for(int i=0; i<20; i++)
+    for(int i=0; i<2; i++)
     {
-        catBox.AddCat(new HellsCats);
+        container2.AddCat(new HellsCats);
     }
-    */
-    Iterator1(container.GetIterator());
+    //вызов метода iterator1
+    Iterator1(container2.GetIterator());
     return 0;
 }

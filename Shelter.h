@@ -4,9 +4,8 @@
 #include "Iterator.h"
 
 
-//КОММИТ 5 КОНТЕЙНЕРЫ\\
-// Созданы 1 базовый класс-контейнер и 2 наследуемых контейнера
-
+//КОММИТ 7 Готовые итераторы\\
+// Созданы итераторы
 enum class CatBreed                 //перечисление пород кошки
 {
     MainCoon,
@@ -136,9 +135,8 @@ public:
 
 
 
-//КОНТЕЙНЕРЫ
+    //КОНТЕЙНЕР №1
 typedef Cat * CatPtr;
-
 //Основной класс контейнер
 class BaseContainer                 // Базовый класс для контейнера
 {
@@ -150,59 +148,91 @@ public:
     virtual CatPtr GetByIndex(int index) const = 0;     // Абстрактный метод для получения кошки по индексу
 };
 
-//ИТЕРАТОР
+            //ИТЕРАТОР №1
 class CatContainerIterator : public Iterator<CatPtr>
 {
 private:
-    const CatPtr *CatBox;           //указатель на указатель на кошку (дин.массив указателей на кошек)
-    int Pos;                        //тек. позиция
-    int Quant;                      //общее кол-во кошек
+    const CatPtr *CatBox;   // Указатель на указатель на кошку (динамический массив указателей на кошек)
+    int Pos;                // Текущая позиция в контейнере
+    int Quant;              // Общее количество кошек в контейнере
 
-    //итератор
 public:
+    // Конструктор, принимающий указатель на массив указателей на кошек и общее количество кошек
     CatContainerIterator(const CatPtr *catBox, int count)
     {
         CatBox = catBox;
         Quant = count;
         Pos = 0;
-
     }
+    // Метод устанавливает итератор на начало контейнера кошек
     void First() { Pos = 0; }
+    // Метод перемещает итератор к следующему элементу контейнера кошек
     void Next() { Pos++; }
+    // Метод проверяет, достиг ли итератор конца контейнера кошек
     bool IsDone() const { return Pos >= Quant; }
+    // Метод возвращает указатель на текущий объект кошки, на который указывает итератор
     CatPtr GetCurrent() const { return CatBox[Pos]; }
 };
 
-//класс-контейнер для нормальных кошек
+            //№1 класс-контейнер для нормальных кошек
 class CatContainer :  BaseContainer             //контейнер с кошками
 {
 private:
-    CatPtr *CatBox;                //указатель на указатель на кошку (дин.массив указателей на кошек)
-    int CatCount;                  //количество кошек
-    int MaxSize;                   //макс размер контейнера
+    CatPtr *CatBox;                             //указатель на указатель на кошку (дин.массив указателей на кошек)
+    int CatCount;                               //количество кошек
+    int MaxSize;                                //макс размер контейнера
 public:
     virtual ~CatContainer();
     CatContainer(int maxSize);
     void AddCat(CatPtr newCat);                 //добавить кошку в приют
     int GetCount() const {cout << "В коробке " << CatCount << " хвостатых\n"; return CatCount; }    //получить число кошек
-    CatPtr GetByIndex(int i) const { return CatBox[i]; }    //пронумеровать кошек их можно ;)
+    CatPtr GetByIndex(int i) const { return CatBox[i]; }           //пронумеровать кошек их можно ;)
     Iterator<CatPtr> *GetIterator()
     {
         return new CatContainerIterator(CatBox, CatCount);
     }
 };
 
+    //ИТЕРАТОР ДЛЯ 2-го КОНТЕЙНЕРА (ВЕКТОР)
+class CatContainerIterator2 : public Iterator<CatPtr>
+{
+protected:
+    // Указатель на константный вектор указателей на объекты кошек
+    const std::vector<CatPtr> *CatBox;
+    std::vector<CatPtr>::const_iterator it;
 
+public:
+    CatContainerIterator2(const std::vector<CatPtr> *catBox)
+    {
+        CatBox = catBox;
+        it = catBox->begin();
+    }
+    // Метод устанавливает итератор на начало контейнера кошек
+    void First() { it = CatBox->begin(); }
+    // Метод перемещает итератор к следующему элементу контейнера
+    void Next() { ++it; }
+    // Метод возвращает true, если итератор достиг конца контейнера
+    bool IsDone() const { return it == CatBox->end(); }
+    // Метод возвращает указатель на текущий объект кошки, на который указывает итератор
+    CatPtr GetCurrent() const { return *it; }
+};
 
+    // КЛАСС-КОНТЕЙНЕР №2
 class MegaCatContainer : public BaseContainer
 {
 private:
+    // Вектор указателей на объекты кошек
     std::vector<CatPtr> CatBox;
-public:
-    void AddCat(CatPtr newCat) {CatBox.push_back(newCat); }
-    int GetCount() const { return CatBox.size(); };
-    CatPtr GetByIndex(int index) const { return CatBox[index]; }
 
+public:
+    // Метод для добавления кошки в контейнер
+    void AddCat(CatPtr newCat) { CatBox.push_back(newCat); }
+    // Метод для получения количества кошек в контейнере
+    int GetCount() const { return CatBox.size();}
+    // Метод для получения кошки по индексу в контейнере
+    CatPtr GetByIndex(int index) const { return CatBox[index]; }
+    // Метод, возвращающий итератор для контейнера
+    Iterator<CatPtr> *GetIterator() { return new CatContainerIterator2(&CatBox);}
 };
 
 
