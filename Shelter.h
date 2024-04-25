@@ -51,7 +51,12 @@ enum class HellObject
     Hooves,
     Horns
 };
-
+enum class OriginCats //происхождение кошки
+{
+    NormalCats,
+    HellsCats,
+    ParadiseCats
+};
 
 string PrintDemonCat( HellObject demon );
 string PrintAngelCat( ParadiseObject angel );
@@ -59,11 +64,14 @@ string PrintNormalCat( CatBreed breed );
 string PrintCatType( CatType type );
 string PrintCatMood(CatMood mood );
 string PrintCatColor(CatColorEnum color );
+string PrintCatOrigin(OriginCats origin);
 
+OriginCats RandomCatOrigin();
 
 class Cat
 {
 protected:
+    OriginCats origin;
     CatColorEnum color;
     CatMood mood;
     CatType type;
@@ -71,6 +79,7 @@ protected:
     Cat();
 public:
     virtual ~Cat() {}
+    OriginCats GetOrigin() const {return origin; }
     CatColorEnum GetColor() const {return color; }
     CatMood GetMood() const { return mood; }
     CatType GetType() const {return type; }
@@ -78,7 +87,8 @@ public:
     virtual void Pat() const = 0;           //погладить кошку
     bool GetHungry() const;
     void Feed();                            // покормить кошку
-    static Cat *Find(CatColorEnum color);       //найти(создать) кошку определенной породы
+
+    static Cat *Find(OriginCats origin);       //найти(создать) кошку определенной породы
 };
 
 class NormalCats : public Cat
@@ -87,7 +97,8 @@ private:
     CatBreed Breed;
 public:
     CatBreed GetBreed() const {return Breed; }
-    NormalCats() : Cat() { type = CatType(rand() % 4);
+    NormalCats() : Cat() { origin = OriginCats::NormalCats;
+                           type = CatType(rand() % 4);
                            Breed = CatBreed(rand() % 7 - 1);
                            color = CatColorEnum(rand() % 5 - 1);
                            mood = CatMood(rand() % 4);}
@@ -106,7 +117,8 @@ class HellsCats : public Cat
 private:
     HellObject demon;
 public:
-    HellsCats() : Cat() { type = CatType(rand() % 4);
+    HellsCats() : Cat() { origin = OriginCats::HellsCats;
+                          type = CatType(rand() % 4);
                           demon = HellObject(rand() % 3);
                           color = CatColorEnum::Red;
                           mood = CatMood::Bad;}
@@ -121,7 +133,8 @@ class ParadiseCats : public Cat
 private:
     ParadiseObject angel;
 public:
-    ParadiseCats() : Cat() { type = CatType(rand() % 4);
+    ParadiseCats() : Cat() { origin = OriginCats::ParadiseCats;
+                             type = CatType(rand() % 4);
                              angel = ParadiseObject(rand() % 3);
                              color = CatColorEnum::White;
                              mood = CatMood(rand() % 4);}
@@ -186,7 +199,7 @@ public:
     CatContainer(int maxSize);
     void AddCat(CatPtr newCat);                 //добавить кошку в приют
     int GetCount() const {cout << "В коробке " << CatCount << " хвостатых\n"; return CatCount; }    //получить число кошек
-    CatPtr GetByIndex(int i) const { return CatBox[i]; }           //пронумеровать кошек их можно ;)
+    CatPtr GetByIndex(int i) const { return CatBox[i]; }           //пронумеровать кошек
     Iterator<CatPtr> *GetIterator()
     {
         return new CatContainerIterator(CatBox, CatCount);

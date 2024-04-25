@@ -80,16 +80,6 @@ void CatContainer::AddCat(CatPtr newCat)
     }
 }
 
-CatColorEnum RandomCatColor()
-{
-    return CatColorEnum(rand() % 6 -1);
-}
-
-
-Cat *Cat::Find(CatColorEnum color)
-{
-    return Find(color);
-}
 
 
 string PrintDemonCat( HellObject demon )
@@ -161,6 +151,30 @@ string PrintCatColor(CatColorEnum color )
         case CatColorEnum::Another : return "разноцветный";
     }
 }
+string PrintCatOrigin(OriginCats origin)
+{
+    switch(origin)
+    {
+        case OriginCats::HellsCats : return "Адская кошка";
+        case OriginCats::NormalCats : return "Обычная кошка";
+        case OriginCats::ParadiseCats : return "Райская кошка";
+    }
+}
 
+
+Cat *Cat::Find(OriginCats origin)
+{
+    switch(origin)
+    {
+        case OriginCats::NormalCats: return new NormalCats;
+        case OriginCats::HellsCats: return new HellsCats;
+        case OriginCats::ParadiseCats: return new ParadiseCats;
+        default: return nullptr;
+    }
+}
+OriginCats RandomCatOrigin()
+{
+    return OriginCats(rand() % 3);
+}
 
 
