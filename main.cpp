@@ -28,61 +28,52 @@ int main()
     cout << "Странный приют для кошек!\n" << endl;
 
     NormalCats cat1;
-    /*
-    cout << "Первая кошка\n";
-    cat1.View();
-    cat1.GetHungry();
-    cat1.Pat();
-    cat1.Feed();
-    cout << "\n";
-    cout << "Вторая кошка\n";
-    */
     HellsCats cat2;
-    /*
-    cat2.View();
-    cat2.GetHungry();
-    cat2.Pat();
-    cat2.Feed();
-    cout << "\n";
-    cout << "Третья кошка\n";
-    */
     ParadiseCats cat3;
-    /*
-    cat3.View();
-    cat3.GetHungry();
-    cat3.Pat();
-    cat3.Feed();
-    cout << "\n";
-    */
     CatContainer container1(5);
     container1.AddCat(&cat1);
     container1.AddCat(&cat2);
     container1.AddCat(&cat3);
     container1.AddCat(new NormalCats);
-    container1.GetCount();
+
+
     cout << "\n";
     cout << "Коробка для кошек №1\n";
     cout << "\n";
+        //вызов функции
     Iterator1(container1.GetIterator());
+        //кол-во кошек в коробке
+    container1.GetCount();
+
+
     cout << "\n";
     cout << "Мега-Коробка для кошек №2\n\n";
     MegaCatContainer container2;
-        //Добавление кошек в коробку №2
-    MegaCatContainer ccontainer2;
 
-    for(int i=0; i<3; i++)
+
+        //Добавление кошек в коробку №2
+    for(int i=0; i<10; i++)
     {
         container2.AddCat(new NormalCats);
     }
-    for(int i=0; i<5; i++)
+    for(int i=0; i<15; i++)
     {
         container2.AddCat(new ParadiseCats);
     }
-    for(int i=0; i<2; i++)
+    for(int i=0; i<18; i++)
     {
         container2.AddCat(new HellsCats);
     }
-    //вызов метода iterator1
-    Iterator1(container2.GetIterator());
+    cout << "В мега-коробке "<< container2.GetCount() << " кошек" << endl;
+        // декоратор №1 выводит только кошек с отличны настроением
+    //Iterator<CatPtr> *it = new CatMoodDecorator(container2.GetIterator(), CatMood::Nice);
+        //декоратор №2 выводит только больших кошек
+    //Iterator<CatPtr> *it = new CatTypeDecorator(container2.GetIterator(), CatType::Big);
+        // декоратор №3 выводит только рыжих кошек
+    Iterator<CatPtr> *it = new CatColorDecorator(container2.GetIterator(), CatColorEnum::Red);
+    Iterator1(it);
+    cout << endl;
+        //выводит всех кошек их мега-коробки
+    //Iterator1(container2.GetIterator());
     return 0;
 }

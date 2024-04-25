@@ -80,15 +80,15 @@ void CatContainer::AddCat(CatPtr newCat)
     }
 }
 
-CatBreed RandomCatBreed()
+CatColorEnum RandomCatColor()
 {
-    return CatBreed(rand() % 4);
+    return CatColorEnum(rand() % 6 -1);
 }
 
 
-Cat *Cat::Find(CatBreed breed)
+Cat *Cat::Find(CatColorEnum color)
 {
-    return Find(breed);
+    return Find(color);
 }
 
 
@@ -135,7 +135,6 @@ string PrintCatType( CatType type )
         case CatType::Little : return "миниатюрна€ кошка";
         case CatType::Average : return "средн€€ кошка";
         case CatType::Big : return "больша€ кошка";
-        //default: return nullptr;
     }
 }
 
@@ -162,5 +161,6 @@ string PrintCatColor(CatColorEnum color )
         case CatColorEnum::Another : return "разноцветный";
     }
 }
+
 
 

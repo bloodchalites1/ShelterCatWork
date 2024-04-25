@@ -4,8 +4,8 @@
 #include "Iterator.h"
 
 
-//КОММИТ 7 Готовые итераторы\\
-// Созданы итераторы
+//КОММИТ 8 Готовые декораторы итератора\\
+// Созданы 3 декоратора для отбора различных видов кошек
 enum class CatBreed                 //перечисление пород кошки
 {
     MainCoon,
@@ -78,7 +78,7 @@ public:
     virtual void Pat() const = 0;           //погладить кошку
     bool GetHungry() const;
     void Feed();                            // покормить кошку
-    static Cat *Find(CatBreed breed);       //найти(создать) кошку определенной породы
+    static Cat *Find(CatColorEnum color);       //найти(создать) кошку определенной породы
 };
 
 class NormalCats : public Cat
@@ -164,13 +164,13 @@ public:
         Quant = count;
         Pos = 0;
     }
-    // Метод устанавливает итератор на начало контейнера кошек
+            // Метод устанавливает итератор на начало контейнера кошек
     void First() { Pos = 0; }
-    // Метод перемещает итератор к следующему элементу контейнера кошек
+            // Метод перемещает итератор к следующему элементу контейнера кошек
     void Next() { Pos++; }
-    // Метод проверяет, достиг ли итератор конца контейнера кошек
+            // Метод проверяет, достиг ли итератор конца контейнера кошек
     bool IsDone() const { return Pos >= Quant; }
-    // Метод возвращает указатель на текущий объект кошки, на который указывает итератор
+            // Метод возвращает указатель на текущий объект кошки, на который указывает итератор
     CatPtr GetCurrent() const { return CatBox[Pos]; }
 };
 
@@ -234,6 +234,94 @@ public:
     // Метод, возвращающий итератор для контейнера
     Iterator<CatPtr> *GetIterator() { return new CatContainerIterator2(&CatBox);}
 };
+
+
+//ДЕКОРАТОРЫ
+
+//Декоратор для отбора кошек по их настроению
+class CatMoodDecorator : public IteratorDecorator<CatPtr>
+{
+protected:
+    CatMood Mood;   // Настроение, по которому отбираются кошки
+public:
+    CatMoodDecorator(Iterator<CatPtr> *it, CatMood mood) : IteratorDecorator(it)
+    {
+        Mood = mood;
+    }
+    // Метод устанавливает итератор на начало контейнера и перемещает его к первой кошке с указанным настроением
+    void First()
+    {
+        It->First();
+        while (!It->IsDone() && It->GetCurrent()->GetMood() != Mood)
+        {
+            It->Next();
+        }
+    }
+    // Метод перемещает итератор к следующей кошке с указанным настроением
+    void Next()
+    {
+        do
+        {
+            It->Next();
+        } while (!It->IsDone() && It->GetCurrent()->GetMood() != Mood);
+    }
+};
+
+//Декоратор для отбора кошек по типу
+class CatTypeDecorator : public IteratorDecorator<CatPtr>
+{
+protected:
+    CatType Type;
+public:
+    CatTypeDecorator(Iterator<CatPtr> *it, CatType type) : IteratorDecorator(it)
+    {
+        Type = type;
+    }
+    void First()
+    {
+        It->First();
+        while (!It->IsDone() && It->GetCurrent()->GetType() != Type)
+        {
+            It->Next();
+        }
+    }
+    void Next()
+    {
+        do
+        {
+            It->Next();
+        } while (!It->IsDone() && It->GetCurrent()->GetType() != Type);
+    }
+};
+
+//Декоратор для отбора кошек по их цвету
+class CatColorDecorator : public IteratorDecorator<CatPtr>
+{
+protected:
+    CatColorEnum Color;
+public:
+    CatColorDecorator(Iterator<CatPtr> *it, CatColorEnum color) : IteratorDecorator(it)
+    {
+        Color = color;
+    }
+    void First()
+    {
+        It->First();
+        while (!It->IsDone() && It->GetCurrent()->GetColor() != Color)
+        {
+            It->Next();
+        }
+    }
+
+    void Next()
+    {
+        do
+        {
+            It->Next();
+        } while (!It->IsDone() && It->GetCurrent()->GetColor() != Color);
+    }
+};
+
 
 
 #endif // SHELTER_H
